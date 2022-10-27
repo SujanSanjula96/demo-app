@@ -14,10 +14,13 @@ export const Layout = () => {
   const { signOut } = useAuthContext();
 
     return (
-      <AppBar position='static' color='transparent'>
+      <AppBar position='static' color='transparent' sx={{height:75}}>
         <Toolbar >
+          <Typography variant="h4" flex={1}>
+            Issue Management Dashboard
+          </Typography>
           <Stack direction='row' spacing={2}>
-            <Button color='inherit' onClick={() => signOut()}>Logout</Button>
+            <Button variant='outlined'  onClick={() => signOut()}>Logout</Button>
           </Stack>
         </Toolbar>
       </AppBar>
