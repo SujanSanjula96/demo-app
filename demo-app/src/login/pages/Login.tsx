@@ -71,7 +71,7 @@ function Login() {
             <Box >
 
               <Typography variant='h4' sx={{mb:12}}>
-                SAMPLE APPLICATION
+                ISSUE MANAGEMENT DASHBOARD
               </Typography>
               <Box
                 display="flex"

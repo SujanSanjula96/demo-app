@@ -41,10 +41,11 @@ const HomePage = () => {
   const [ isLoaded, setIsLoaded ] = useState<boolean>(false);
   const [ openNewIssue, setOpenNewIssue ] = useState<boolean>(false);
   const [ newIssue,  setNewIssue ] = useState<string>("");
+  const [ needRefresh, setNeedRefresh ] = useState<boolean>(true);
 
   const appList = [{name: "Issue 1"},{name: "Issue 2"},{name: "Issue 3"}];
 
-  const getApplicationList = async () => {
+  const getIssueList = async () => {
     const response = await httpRequest({
         url: "https://7f092d26-d233-4e7d-b0da-1a23893c68da-prod.e1-us-east-azure.preview-dv.choreoapis.dev/urow/echo-service/1.0.0/names",
     });
@@ -61,9 +62,13 @@ const HomePage = () => {
  }
 
   useEffect(() => {
-    getApplicationList();
+    if (needRefresh){
+      getIssueList();
+      setNeedRefresh(false);
+    }
+    
 
-  }, []);
+  }, [needRefresh]);
 
   useEffect((() =>{
     if (state?.isAuthenticated) {
@@ -93,7 +98,9 @@ const HomePage = () => {
         headerName: 'Status',
         type: 'actions',
         flex: 1,
-        renderCell: (params) => <Actions {...{ params }} />,
+        renderCell: (params) => <Actions params={params}
+                                        setNeedRefresh={setNeedRefresh}
+        />,
     },
     ],
     []
@@ -113,6 +120,8 @@ const HomePage = () => {
       method: "POST",
       url: "https://7f092d26-d233-4e7d-b0da-1a23893c68da-prod.e1-us-east-azure.preview-dv.choreoapis.dev/urow/echo-service/1.0.0/names",
     });
+    setNeedRefresh(true);
+    setNewIssue("");
     setOpenNewIssue(false);
   }
 
