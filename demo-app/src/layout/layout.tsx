@@ -20,7 +20,7 @@ export const Layout = () => {
             Issue Management Dashboard
           </Typography>
           <Stack direction='row' spacing={2}>
-            <Button variant='outlined'  onClick={() => signOut()}>Logout</Button>
+            <Button variant='contained'  onClick={() => signOut()}>Logout</Button>
           </Stack>
         </Toolbar>
       </AppBar>
