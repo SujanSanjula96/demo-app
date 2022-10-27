@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "react-json-view": "^1.21.1",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@asgardeo/auth-react": "^1.1.18",
