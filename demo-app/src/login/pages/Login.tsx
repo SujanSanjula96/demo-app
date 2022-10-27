@@ -58,20 +58,20 @@ function Login() {
   return (
     
     <>
-      { !state?.isLoading &&
+      { (!state?.isLoading && !isLoading) &&
       <div >
-        <Box display="flex" height={1} flexDirection="column" pt={1}>
+        <Box display="flex" justifyContent="center" alignItems="center" justifyItems='center' alignContent='center' sx={{mt:15}}>
           <Box
             display="flex"
-            flexDirection="column"
             justifyContent="center"
             alignItems="center"
-            flexGrow={1}
+            justifyItems='center'
+            sx={{width:600, height:400, backgroundColor:'#eeeeee', borderRadius:5}}
           >
             <Box >
 
-              <Typography variant='h6' sx={{mb:12}}>
-                AUTHORIZATION SERVICE
+              <Typography variant='h4' sx={{mb:12}}>
+                SAMPLE APPLICATION
               </Typography>
               <Box
                 display="flex"
@@ -100,7 +100,7 @@ function Login() {
       }
       { (isLoading || state?.isLoading)  && 
       <div >
-        <Box sx={{ display: 'flex' }}>
+        <Box justifyContent="center" alignItems="center" justifyItems='center' alignContent='center' sx={{mt:30}} >
           <CircularProgress />
         </Box>
       </div>
