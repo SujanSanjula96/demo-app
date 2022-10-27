@@ -1,0 +1,8 @@
+{
+    "clientID": "sEuEP4IwGfRJYXvcpgN2UjtzBP0a",
+    "baseUrl": "https://dev.api.asgardeo.io",
+    "signInRedirectURL": "http://localhost:3000",
+    "signOutRedirectURL": "http://localhost:3000",
+    "scope": ["openid","SYSTEM"],
+    "resourceServerURLs": [ "http://localhost:9090", "https://run.mocky.io/v3/", "https://api.authz.choreoapps.dev" ]
+}
