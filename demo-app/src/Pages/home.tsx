@@ -94,7 +94,7 @@ const HomePage = () => {
             alignItems="center"
             sx={{width:"100%"}}>
             <Box m={2} sx={{width:"100%",  height:500} }>
-                <Button variant='contained' sx={{mt:3}} onClick={handleRead} >
+                <Button variant='contained' sx={{mt:3}} onClick={() => {console.log("")}} >
                     New Issue
                 </Button>
                 <Box m={2}>
