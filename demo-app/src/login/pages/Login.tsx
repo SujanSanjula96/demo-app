@@ -38,7 +38,7 @@ function Login() {
         return;
     } else {
       
-      history.replace("applications");
+      history.replace("issues");
     }
   }, [ state?.isAuthenticated ]);
 
@@ -70,8 +70,11 @@ function Login() {
           >
             <Box >
 
+              <Typography variant='h4' sx={{mb:2}}>
+                ISSUE MANAGEMENT
+              </Typography>
               <Typography variant='h4' sx={{mb:12}}>
-                ISSUE MANAGEMENT DASHBOARD
+                DASHBOARD
               </Typography>
               <Box
                 display="flex"

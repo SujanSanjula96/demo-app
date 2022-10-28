@@ -9,6 +9,7 @@ import { Avatar, Box, Button, Modal, TextField, Typography } from "@mui/material
 import JSONModal from "../components/JSONModal";
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { grey } from '@mui/material/colors';
+import { MuiSnackbar } from "../components/snackbar";
 
 import Actions from '../components/actions';
 
@@ -42,23 +43,32 @@ const HomePage = () => {
   const [ openNewIssue, setOpenNewIssue ] = useState<boolean>(false);
   const [ newIssue,  setNewIssue ] = useState<string>("");
   const [ needRefresh, setNeedRefresh ] = useState<boolean>(true);
+  const [ loadFailed, setLoadFailed ] = useState<boolean>(null);
+
+  const [ openAlert, setOpenAlert ] = useState<boolean>(false);
+  const [ alertMessage, setAlertMessage ] = useState<string>(undefined);
+  const [ alertSeverity, setAlertSeverity ] = useState<any>(undefined);
 
   const appList = [{name: "Issue 1"},{name: "Issue 2"},{name: "Issue 3"}];
 
   const getIssueList = async () => {
-    const response = await httpRequest({
-        url: "https://7f092d26-d233-4e7d-b0da-1a23893c68da-prod.e1-us-east-azure.preview-dv.choreoapis.dev/urow/echo-service/1.0.0/names",
-    });
+    try{
+        const response = await httpRequest({
+          url: "https://7f092d26-d233-4e7d-b0da-1a23893c68da-prod.e1-us-east-azure.preview-dv.choreoapis.dev/urow/issuemanagementapi/1.0.0/names",
+      });
 
-    const tempList = response.data.map((issue) => {
-      return {
-          name: issue
-      }
-    });
+      const tempList = response.data.map((issue) => {
+        return {
+            name: issue
+        }
+      });
 
-    console.log(tempList);
-    setResponseList(tempList);
-    setIsLoaded(true);
+      setResponseList(tempList);
+      setIsLoaded(true);
+    } catch (e) {
+      setLoadFailed(true);
+    }
+
  }
 
   useEffect(() => {
@@ -99,6 +109,9 @@ const HomePage = () => {
         type: 'actions',
         flex: 1,
         renderCell: (params) => <Actions params={params}
+                                        setOpenAlert={setOpenAlert}
+                                        setAlertMessage={setAlertMessage}
+                                        setAlertSeverity={setAlertSeverity}
                                         setNeedRefresh={setNeedRefresh}
         />,
     },
@@ -115,18 +128,30 @@ const HomePage = () => {
   }
 
   const handleCreate = async () => {
-    const response = await httpRequest({
-      data: newIssue,
-      method: "POST",
-      url: "https://7f092d26-d233-4e7d-b0da-1a23893c68da-prod.e1-us-east-azure.preview-dv.choreoapis.dev/urow/echo-service/1.0.0/names",
-    });
-    setNeedRefresh(true);
-    setNewIssue("");
-    setOpenNewIssue(false);
-  }
+    try{
+      const response = await httpRequest({
+        data: newIssue,
+        method: "POST",
+        url: "https://7f092d26-d233-4e7d-b0da-1a23893c68da-prod.e1-us-east-azure.preview-dv.choreoapis.dev/urow/issuemanagementapi/1.0.0/names",
+      });
+      setNeedRefresh(true);
+      setNewIssue("");
+      setOpenNewIssue(false);
+      setAlertMessage("Issue Created Successfully");
+      setAlertSeverity('success');
+      setOpenAlert(true);
+    } catch (e) {
+      setNewIssue("");
+      setOpenNewIssue(false);
+      setAlertMessage("Failed to create the issue");
+      setAlertSeverity('error');
+      setOpenAlert(true);
+    }
 
+  }
+  if (isLoaded) {
   return ( 
-    {isOrganizationLoaded} && {isLoaded} &&
+    {isOrganizationLoaded} && {isLoaded} && 
     <Box sx={{mt:2}}>
         <Box component="span"
             display="flex"
@@ -206,10 +231,34 @@ const HomePage = () => {
             </Box>
 
         </Box>
+        <MuiSnackbar openAlert={openAlert} 
+        setOpenAlert={setOpenAlert} 
+        message={alertMessage}
+        severity={alertSeverity}
+      />
 
     </Box>
     
+
   );
+          } 
+  if (loadFailed) {
+    return(
+      <Box sx={{backgroundColor:'#eeeeee'}}>
+
+      <Box component="span"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          sx={{height:100,mt:5}}>
+            <Typography variant="h4">
+              You are not Authorized!
+            </Typography>
+      </Box>
+
+  </Box>
+    )
+  }
 };
 
 export default HomePage;

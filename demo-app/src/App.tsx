@@ -27,7 +27,7 @@ function App() {
             <Route exact path="/" >
               <Login />
             </Route >
-            <SecureRedirect path="/applications" component={Dashboard} />
+            <SecureRedirect path="/issues" component={Dashboard} />
         </Router>
       </Providers>
     </div>

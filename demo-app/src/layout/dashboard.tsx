@@ -55,7 +55,7 @@ export const Dashboard = () => {
     <>
         <div>
         <Layout />
-            <Route exact path="/applications" >
+            <Route exact path="/issues" >
               <HomePage />
             </Route >
       </div>

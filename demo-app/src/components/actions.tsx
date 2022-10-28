@@ -11,12 +11,22 @@ const Actions = ( props ) => {
   const { state, signOut, getBasicUserInfo, getIDToken, getDecodedIDToken, getAccessToken, httpRequest } = useAuthContext();
 
   const handleDelete = async () => {
-    const response = await httpRequest({
-      data: props.params.row.name,
-      method: "DELETE",
-      url: "https://7f092d26-d233-4e7d-b0da-1a23893c68da-prod.e1-us-east-azure.preview-dv.choreoapis.dev/urow/echo-service/1.0.0/names",
-    });
-    props.setNeedRefresh(true);
+    try{
+      const response = await httpRequest({
+        data: props.params.row.name,
+        method: "DELETE",
+        url: "https://7f092d26-d233-4e7d-b0da-1a23893c68da-prod.e1-us-east-azure.preview-dv.choreoapis.dev/urow/issuemanagementapi/1.0.0/names",
+      });
+      props.setNeedRefresh(true);
+      props.setAlertMessage("Issue closed successfully");
+      props.setAlertSeverity('success');
+      props.setOpenAlert(true);
+    } catch (e) {
+      props.setAlertMessage("Failed to close the issue");
+      props.setAlertSeverity('error');
+      props.setOpenAlert(true);
+    }
+
   }
 
   return (
