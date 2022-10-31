@@ -31,34 +31,41 @@ interface DecodedAccessTokenInterface {
 
 export const Dashboard = () => {
 
-  const { state, signOut, getBasicUserInfo, getIDToken, getDecodedIDToken, getAccessToken, httpRequest } = useAuthContext();
+  const { state, getAccessToken } = useAuthContext();
 
   const [ isOrganizationLoaded, setIsOrganizationLoaded] = useState<boolean>(false);
+  const [ scopes, setScopes ] = useState<string>("");
 
   useEffect((() =>{
     if (state?.isAuthenticated) {
       const getData = async () => {
-        const basicUserInfo = await getBasicUserInfo();
-        const accessToken = await getAccessToken();
-        const decodedAccessToken = jwt(accessToken) as DecodedAccessTokenInterface;
 
-        console.log(basicUserInfo);
-        console.log(decodedAccessToken);
+        const accessToken = await getAccessToken();
+        const decodedAccessToken = await jwt(accessToken) as DecodedAccessTokenInterface;
+
+        await setScopes(decodedAccessToken.scope);
+        console.log(decodedAccessToken.scope);
+        console.log(scopes);
         setIsOrganizationLoaded(true);
       };
       getData();
     }
   }), []);
 
-  return (
-    {isOrganizationLoaded} &&
-    <>
-        <div>
-        <Layout />
-            <Route exact path="/issues" >
-              <HomePage />
-            </Route >
-      </div>
-    </>
-  )
+  if (scopes !== "") {
+    return (
+      {isOrganizationLoaded} &&
+      <>
+        < UserProvider user={{scopes: scopes}} >
+          <div>
+            <Layout />
+                <Route exact path="/issues" >
+                  <HomePage />
+                </Route >
+          </div>
+        </UserProvider >
+      </>
+    )
+  }
+
 }

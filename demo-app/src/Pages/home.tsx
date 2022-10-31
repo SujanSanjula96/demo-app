@@ -12,6 +12,7 @@ import { grey } from '@mui/material/colors';
 import { MuiSnackbar } from "../components/snackbar";
 
 import Actions from '../components/actions';
+import { useUser } from '../providers/UserProvider';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -29,6 +30,27 @@ interface IssueInterface {
   name?: string
 }
 
+interface OrganizationInterface {
+  handle?: string,
+  uuid?: string
+}
+
+interface DecodedAccessTokenInterface {
+  aud?: [],
+  aut?: string,
+  azp?: string,
+  exp?: number,
+  iat?: number,
+  idp_claims?: {},
+  iss?: string,
+  jti?: string,
+  nbf?: number,
+  organization?: OrganizationInterface,
+  organizations?: [],
+  scope?: string,
+  sub?: string
+}
+
 const HomePage = () => {
 
     const [pageSize, setPageSize] = useState(5);
@@ -44,24 +66,27 @@ const HomePage = () => {
   const [ newIssue,  setNewIssue ] = useState<string>("");
   const [ needRefresh, setNeedRefresh ] = useState<boolean>(true);
   const [ loadFailed, setLoadFailed ] = useState<boolean>(null);
+  const [ scopeLoaded, setScopeLoaded ] = useState<boolean>(null);
 
   const [ openAlert, setOpenAlert ] = useState<boolean>(false);
   const [ alertMessage, setAlertMessage ] = useState<string>(undefined);
   const [ alertSeverity, setAlertSeverity ] = useState<any>(undefined);
+
+  const scopes = useUser().scopes;
+  const canClose = scopes.includes("urn");
 
   const appList = [{name: "Issue 1"},{name: "Issue 2"},{name: "Issue 3"}];
 
   const getIssueList = async () => {
     try{
         const response = await httpRequest({
-          url: "https://7f092d26-d233-4e7d-b0da-1a23893c68da-prod.e1-us-east-azure.preview-dv.choreoapis.dev/urow/issuemanagementapi/1.0.0/names",
+          url: "https://7f092d26-d233-4e7d-b0da-1a23893c68da-prod.e1-us-east-azure.preview-dv.choreoapis.dev/urow/issueapi/1.0.0/issues",
       });
 
-      const tempList = response.data.map((issue) => {
-        return {
-            name: issue
-        }
-      });
+      const tempList = response.data;
+      console.log(scopes);
+
+      console.log(canClose);
 
       setResponseList(tempList);
       setIsLoaded(true);
@@ -71,7 +96,9 @@ const HomePage = () => {
 
  }
 
+
   useEffect(() => {
+    
     if (needRefresh){
       getIssueList();
       setNeedRefresh(false);
@@ -80,12 +107,11 @@ const HomePage = () => {
 
   }, [needRefresh]);
 
-  useEffect((() =>{
+  useEffect(() =>{
     if (state?.isAuthenticated) {
       const getData = async () => {
-        const basicUserInfo = await getBasicUserInfo();
         const accessToken = await getAccessToken();
-        const decodedAccessToken = jwt(accessToken);
+        const decodedAccessToken = jwt(accessToken) as DecodedAccessTokenInterface;
         const decodedIDToken = await getDecodedIDToken();
         setDecodedAccessToken(decodedAccessToken);
         setDecodedIDToken(decodedIDToken);
@@ -93,9 +119,10 @@ const HomePage = () => {
         
       };
       getData();
-    }
-  }), []);
- 
+
+  }
+  }, []);
+
 
   const columns = useMemo(
     () => [
@@ -113,6 +140,7 @@ const HomePage = () => {
                                         setAlertMessage={setAlertMessage}
                                         setAlertSeverity={setAlertSeverity}
                                         setNeedRefresh={setNeedRefresh}
+                                        canClose={canClose}
         />,
     },
     ],
@@ -132,7 +160,7 @@ const HomePage = () => {
       const response = await httpRequest({
         data: newIssue,
         method: "POST",
-        url: "https://7f092d26-d233-4e7d-b0da-1a23893c68da-prod.e1-us-east-azure.preview-dv.choreoapis.dev/urow/issuemanagementapi/1.0.0/names",
+        url: "https://7f092d26-d233-4e7d-b0da-1a23893c68da-prod.e1-us-east-azure.preview-dv.choreoapis.dev/urow/issueapi/1.0.0/issues",
       });
       setNeedRefresh(true);
       setNewIssue("");
@@ -151,7 +179,7 @@ const HomePage = () => {
   }
   if (isLoaded) {
   return ( 
-    {isOrganizationLoaded} && {isLoaded} && 
+    {isOrganizationLoaded} && {isLoaded} && {scopeLoaded} &&
     <Box sx={{mt:2}}>
         <Box component="span"
             display="flex"

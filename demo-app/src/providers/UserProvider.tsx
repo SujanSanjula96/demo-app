@@ -7,8 +7,7 @@ interface IUserContextProps {
 }
 
 interface IUserContext {
-    orgName: string;
-    orgId: string;
+    scopes: string;
 }
 
 export function useUser() {
