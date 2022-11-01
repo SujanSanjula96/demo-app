@@ -73,7 +73,7 @@ const HomePage = () => {
   const [ alertSeverity, setAlertSeverity ] = useState<any>(undefined);
 
   const scopes = useUser().scopes;
-  const canClose = scopes.includes("urn");
+  const canClose = scopes.includes("urn:sujandev:issueapi:close_issue");
 
   const appList = [{name: "Issue 1"},{name: "Issue 2"},{name: "Issue 3"}];
 
