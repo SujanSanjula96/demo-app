@@ -10,7 +10,7 @@ const Actions = ( props ) => {
 
   const history = useHistory();
   const location = useLocation();
-  const { state, signOut, getBasicUserInfo, getIDToken, getDecodedIDToken, getAccessToken, httpRequest } = useAuthContext();
+  const { httpRequest } = useAuthContext();
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
@@ -27,8 +27,11 @@ const Actions = ( props ) => {
   const handleDelete = async () => {
     try{
       const response = await httpRequest({
+        data: {
+          status: "Closed"
+        },
         method: "PATCH",
-        url: "https://7f092d26-d233-4e7d-b0da-1a23893c68da-prod.e1-us-east-azure.preview-dv.choreoapis.dev/urow/issueapi/1.0.0/issues/" + props.params.row.name +"/status",
+        url: "https://7f092d26-d233-4e7d-b0da-1a23893c68da-prod.e1-us-east-azure.preview-dv.choreoapis.dev/urow/issueapi/1.0.0/issues/" + props.params.row.name ,
       });
       props.setNeedRefresh(true);
       props.setAlertMessage("Issue closed successfully");
