@@ -177,6 +177,7 @@ const HomePage = () => {
     }
 
   }
+  
   if (isLoaded) {
   return ( 
     {isOrganizationLoaded} && {isLoaded} && {scopeLoaded} &&

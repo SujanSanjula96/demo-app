@@ -4,7 +4,9 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useAuthContext } from '@asgardeo/auth-react';
 import { useEffect, useState } from 'react';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import React from 'react';
+
 
 const Actions = ( props ) => {
 
@@ -12,6 +14,7 @@ const Actions = ( props ) => {
   const location = useLocation();
   const { httpRequest } = useAuthContext();
 
+  const [ openDialog, setOpenDialog ] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
   const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -23,6 +26,37 @@ const Actions = ( props ) => {
   };
 
   const open = Boolean(anchorEl);
+
+  const handleDialogOpen = () => {
+    setOpenDialog(true);
+  }
+
+  const handleDialogClose = () => {
+    setOpenDialog(false);
+  }
+
+   
+
+  function DeleteDialog() {
+    return (
+      <Dialog
+        open={openDialog}
+        onClose={handleDialogClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Are you sure to close the issue?"}
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={handleDialogClose} >Cancel</Button>
+          <Button onClick={handleDelete} variant='contained'>
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  }
 
   const handleDelete = async () => {
     try{
@@ -37,10 +71,12 @@ const Actions = ( props ) => {
       props.setAlertMessage("Issue closed successfully");
       props.setAlertSeverity('success');
       props.setOpenAlert(true);
+      setOpenDialog(false);
     } catch (e) {
       props.setAlertMessage("Failed to close the issue");
       props.setAlertSeverity('error');
       props.setOpenAlert(true);
+      setOpenDialog(false);
     }
 
   }
@@ -49,10 +85,11 @@ const Actions = ( props ) => {
     return (
       <Box>
         <Tooltip title="Close the issue">
-            <Button variant='contained' onClick={handleDelete}>
+            <Button variant='contained' onClick={handleDialogOpen}>
               CLOSE
             </Button>
         </Tooltip>
+        <DeleteDialog />
       </Box>
     );
   }
@@ -71,9 +108,10 @@ const Actions = ( props ) => {
       <Box         
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}>
-            <Button variant='contained' disabled onClick={handleDelete}>
+            <Button variant='contained' disabled >
               CLOSE
             </Button>
+            
       </Box>
             <Popover
             id="mouse-over-popover"

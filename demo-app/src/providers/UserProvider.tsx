@@ -8,6 +8,8 @@ interface IUserContextProps {
 
 interface IUserContext {
     scopes: string;
+    email: string;
+    displayName: string;
 }
 
 export function useUser() {
