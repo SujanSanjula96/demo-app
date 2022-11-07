@@ -13,6 +13,7 @@ import { MuiSnackbar } from "../components/snackbar";
 
 import Actions from '../components/actions';
 import { useUser } from '../providers/UserProvider';
+import CopyToClipboardButton from "../components/copy-to-clipboard";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -58,6 +59,7 @@ const HomePage = () => {
   const { state, signOut, getBasicUserInfo, getIDToken, getDecodedIDToken, getAccessToken, httpRequest } = useAuthContext();
 
   const [ decodedAccessToken, setDecodedAccessToken ] = useState<any>();
+  const [ accessToken, setAccessToken ] = useState<any>();
   const [ decodedIDToken, setDecodedIDToken ] = useState<any>();
   const [ isOrganizationLoaded, setIsOrganizationLoaded] = useState<boolean>(false);
   const [ responseList, setResponseList ] = useState<IssueInterface[]>([]);
@@ -113,6 +115,7 @@ const HomePage = () => {
         const accessToken = await getAccessToken();
         const decodedAccessToken = jwt(accessToken) as DecodedAccessTokenInterface;
         const decodedIDToken = await getDecodedIDToken();
+        setAccessToken(accessToken);
         setDecodedAccessToken(decodedAccessToken);
         setDecodedIDToken(decodedIDToken);
         setIsOrganizationLoaded(true);
@@ -257,6 +260,7 @@ const HomePage = () => {
                 sx={{height:100}}>
                 <JSONModal title="Decoded ID Token" buttonLabel="Decoded ID Token" json={decodedIDToken}/>
                 <JSONModal title="Decoded Choreo STS Token" buttonLabel="Decoded Choreo STS Token" json={decodedAccessToken}/>
+                < CopyToClipboardButton copyString={accessToken} />
             </Box>
 
         </Box>
