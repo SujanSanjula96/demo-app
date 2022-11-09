@@ -8,14 +8,14 @@ interface Props {
 const config = {
   signInRedirectURL: "http://localhost:3001",
   signOutRedirectURL: "http://localhost:3001",
-  clientID: "AASVmRUB48lW_MehmiJzDB7rvaEa",
-  baseUrl: "https://dev.api.asgardeo.io/t/sujandev",
+  clientID: "UT8dq9f85ZTrD4LUkaeE6tceHQAa",
+  baseUrl: "https://dev.api.asgardeo.io/t/starkindustries",
   scope: [ "openid","profile", "groups" ],
-  resourceServerURLs: [ "http://localhost:9090", "https://7f092d26-d233-4e7d-b0da-1a23893c68da-dev.e1-us-east-azure.preview-dv.choreoapis.dev/", "https://7f092d26-d233-4e7d-b0da-1a23893c68da-prod.e1-us-east-azure.preview-dv.choreoapis.dev", "https://sts.preview-dv.choreo.dev/", "https://7f092d26-d233-4e7d-b0da-1a23893c68da-prod.e1-us-east-azure.preview-dv.choreoapis.dev" ],
+  resourceServerURLs: [ "https://sts.preview-dv.choreo.dev/", "https://19a0c28e-e423-4641-a4f3-d20572a06a9e-prod.e1-us-east-azure.preview-dv.choreoapis.dev/guhm/issueapi/1.0.0" ],
   stsConfig: {
-    client_id: "4C4IZpSbEgVe22VV4klI7b1ilQ8a",
-    scope: ["urn:sujandev:issueapi:create_issue", "urn:sujandev:issueapi:list_issues", "urn:sujandev:issueapi:close_issue", "abc"],
-    orgHandle: "sujandev"
+    client_id: "4USSoh7kwOEvk3F29o_dkHtfTGYa",
+    scope: ["urn:starkindustries:issueapi:create_issue", "urn:starkindustries:issueapi:list_issues", "urn:starkindustries:issueapi:close_issue", "abc"],
+    orgHandle: "starkindustries"
   },
   stsTokenEndpoint: "https://sts.preview-dv.choreo.dev/oauth2/token"
 };

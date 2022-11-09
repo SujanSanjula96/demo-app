@@ -75,14 +75,14 @@ const HomePage = () => {
   const [ alertSeverity, setAlertSeverity ] = useState<any>(undefined);
 
   const scopes = useUser().scopes;
-  const canClose = scopes.includes("urn:sujandev:issueapi:close_issue");
+  const canClose = scopes.includes("urn:starkindustries:issueapi:close_issue");
 
   const appList = [{name: "Issue 1"},{name: "Issue 2"},{name: "Issue 3"}];
 
   const getIssueList = async () => {
     try{
         const response = await httpRequest({
-          url: "https://7f092d26-d233-4e7d-b0da-1a23893c68da-prod.e1-us-east-azure.preview-dv.choreoapis.dev/urow/issueapi/1.0.0/issues",
+          url: "https://19a0c28e-e423-4641-a4f3-d20572a06a9e-prod.e1-us-east-azure.preview-dv.choreoapis.dev/guhm/issueapi/1.0.0/issues",
       });
 
       const tempList = response.data;
@@ -163,7 +163,7 @@ const HomePage = () => {
       const response = await httpRequest({
         data: newIssue,
         method: "POST",
-        url: "https://7f092d26-d233-4e7d-b0da-1a23893c68da-prod.e1-us-east-azure.preview-dv.choreoapis.dev/urow/issueapi/1.0.0/issues",
+        url: "https://19a0c28e-e423-4641-a4f3-d20572a06a9e-prod.e1-us-east-azure.preview-dv.choreoapis.dev/guhm/issueapi/1.0.0/issues",
       });
       setNeedRefresh(true);
       setNewIssue("");
@@ -277,6 +277,7 @@ const HomePage = () => {
           } 
   if (loadFailed) {
     return(
+      <>
       <Box sx={{backgroundColor:'#eeeeee'}}>
 
       <Box component="span"
@@ -288,8 +289,23 @@ const HomePage = () => {
               You are not Authorized!
             </Typography>
       </Box>
+      </Box>
 
-  </Box>
+      <Box sx={{backgroundColor:'#eeeeee', mt:10}}>
+
+        <Box component="span"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            sx={{height:100}}>
+            <JSONModal title="Decoded ID Token" buttonLabel="Decoded ID Token" json={decodedIDToken}/>
+            <JSONModal title="Decoded Choreo STS Token" buttonLabel="Decoded Choreo STS Token" json={decodedAccessToken}/>
+            < CopyToClipboardButton copyString={accessToken} />
+        </Box>
+
+        </Box>
+        </>
+  
     )
   }
 };
