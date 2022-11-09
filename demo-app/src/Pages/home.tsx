@@ -14,6 +14,7 @@ import { MuiSnackbar } from "../components/snackbar";
 import Actions from '../components/actions';
 import { useUser } from '../providers/UserProvider';
 import CopyToClipboardButton from "../components/copy-to-clipboard";
+import { apiUrl } from "../config";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -82,7 +83,7 @@ const HomePage = () => {
   const getIssueList = async () => {
     try{
         const response = await httpRequest({
-          url: "https://19a0c28e-e423-4641-a4f3-d20572a06a9e-prod.e1-us-east-azure.preview-dv.choreoapis.dev/guhm/issueapi/1.0.0/issues",
+          url: apiUrl + "/issues",
       });
 
       const tempList = response.data;
@@ -163,7 +164,7 @@ const HomePage = () => {
       const response = await httpRequest({
         data: newIssue,
         method: "POST",
-        url: "https://19a0c28e-e423-4641-a4f3-d20572a06a9e-prod.e1-us-east-azure.preview-dv.choreoapis.dev/guhm/issueapi/1.0.0/issues",
+        url: apiUrl + "/issues",
       });
       setNeedRefresh(true);
       setNewIssue("");

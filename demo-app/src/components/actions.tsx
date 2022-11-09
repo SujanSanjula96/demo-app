@@ -6,6 +6,7 @@ import { useAuthContext } from '@asgardeo/auth-react';
 import { useEffect, useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import React from 'react';
+import { apiUrl } from '../config';
 
 
 const Actions = ( props ) => {
@@ -65,7 +66,7 @@ const Actions = ( props ) => {
           status: "Closed"
         },
         method: "PATCH",
-        url: "https://19a0c28e-e423-4641-a4f3-d20572a06a9e-prod.e1-us-east-azure.preview-dv.choreoapis.dev/guhm/issueapi/1.0.0/issues/" + props.params.row.name ,
+        url: apiUrl + "/issues/" + props.params.row.name ,
       });
       props.setNeedRefresh(true);
       props.setAlertMessage("Issue closed successfully");
