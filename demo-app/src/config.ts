@@ -1,1 +1,1 @@
-export const apiUrl = "https://7f092d26-d233-4e7d-b0da-1a23893c68da-prod.e1-us-east-azure.preview-dv.choreoapis.dev/urow/issueapi/1.0.0";
+export const apiUrl = "https://19a0c28e-e423-4641-a4f3-d20572a06a9e-prod.e1-us-east-azure.preview-dv.choreoapis.dev/guhm/issueapi/1.0.0";

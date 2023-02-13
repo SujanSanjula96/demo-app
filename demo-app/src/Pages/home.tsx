@@ -29,7 +29,9 @@ const style = {
 };
 
 interface IssueInterface {
-  name?: string
+  id?: string;
+  name?: string;
+  status?: string;
 }
 
 interface OrganizationInterface {
@@ -57,7 +59,7 @@ const HomePage = () => {
 
     const [pageSize, setPageSize] = useState(5);
 
-  const { state, signOut, getBasicUserInfo, getIDToken, getDecodedIDToken, getAccessToken, httpRequest } = useAuthContext();
+  const { state, getDecodedIDToken, getAccessToken, httpRequest, getDecodedIDPIDToken } = useAuthContext();
 
   const [ decodedAccessToken, setDecodedAccessToken ] = useState<any>();
   const [ accessToken, setAccessToken ] = useState<any>();
@@ -115,7 +117,9 @@ const HomePage = () => {
       const getData = async () => {
         const accessToken = await getAccessToken();
         const decodedAccessToken = jwt(accessToken) as DecodedAccessTokenInterface;
-        const decodedIDToken = await getDecodedIDToken();
+        //const sessionData = JSON.parse(sessionStorage.getItem("session_data-instance_0"));
+        //const accessTokenIDP = sessionData.access_token;
+        const decodedIDToken = await getDecodedIDToken();//jwt(accessTokenIDP);
         setAccessToken(accessToken);
         setDecodedAccessToken(decodedAccessToken);
         setDecodedIDToken(decodedIDToken);
@@ -162,7 +166,7 @@ const HomePage = () => {
   const handleCreate = async () => {
     try{
       const response = await httpRequest({
-        data: newIssue,
+        data: { name: newIssue },
         method: "POST",
         url: apiUrl + "/issues",
       });
@@ -199,7 +203,7 @@ const HomePage = () => {
                     <DataGrid
                         columns={columns}
                         rows={responseList}
-                        getRowId={(row) => row.name}
+                        getRowId={(row) => row.id}
                         rowsPerPageOptions={[5, 10, 20]}
                         pageSize={pageSize}
                         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
@@ -259,7 +263,7 @@ const HomePage = () => {
                 justifyContent="center"
                 alignItems="center"
                 sx={{height:100}}>
-                <JSONModal title="Decoded ID Token" buttonLabel="Decoded ID Token" json={decodedIDToken}/>
+                <JSONModal title="Decoded Access Token" buttonLabel="Decoded Access Token" json={decodedIDToken}/>
                 <JSONModal title="Decoded Choreo STS Token" buttonLabel="Decoded Choreo STS Token" json={decodedAccessToken}/>
                 < CopyToClipboardButton copyString={accessToken} />
             </Box>
@@ -299,7 +303,7 @@ const HomePage = () => {
             justifyContent="center"
             alignItems="center"
             sx={{height:100}}>
-            <JSONModal title="Decoded ID Token" buttonLabel="Decoded ID Token" json={decodedIDToken}/>
+            <JSONModal title="Decoded Access Token" buttonLabel="Decoded Access Token" json={decodedIDToken}/>
             <JSONModal title="Decoded Choreo STS Token" buttonLabel="Decoded Choreo STS Token" json={decodedAccessToken}/>
             < CopyToClipboardButton copyString={accessToken} />
         </Box>

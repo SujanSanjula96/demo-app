@@ -66,7 +66,7 @@ const Actions = ( props ) => {
           status: "Closed"
         },
         method: "PATCH",
-        url: apiUrl + "/issues/" + props.params.row.name ,
+        url: apiUrl + "/issues/" + props.params.row.id ,
       });
       props.setNeedRefresh(true);
       props.setAlertMessage("Issue closed successfully");
